@@ -65,6 +65,13 @@ db.sqlite3-journal
 instance/
 .webassets-cache
 
+# DVC-managed pipeline outputs
+data/raw/
+data/interim/
+data/processed/
+models/model.pkl
+models/vectorizer.pkl
+
 # Scrapy stuff:
 .scrapy
 
