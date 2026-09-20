@@ -34,7 +34,8 @@ class TestModelLoading(unittest.TestCase):
         cls.new_model = mlflow.pyfunc.load_model(cls.new_model_uri)
 
         # Load the vectorizer
-        cls.vectorizer = pickle.load(open("models/vectorizer.pkl", "rb"))
+        with open("models/vectorizer.pkl", "rb") as vectorizer_file:
+            cls.vectorizer = pickle.load(vectorizer_file)
 
         # Load holdout test data
         cls.holdout_data = pd.read_csv("data/processed/test_bow.csv")
@@ -80,9 +81,9 @@ class TestModelLoading(unittest.TestCase):
 
         # Calculate performance metrics for the new model
         accuracy_new = accuracy_score(y_holdout, y_pred_new)
-        precision_new = precision_score(y_holdout, y_pred_new)
-        recall_new = recall_score(y_holdout, y_pred_new)
-        f1_new = f1_score(y_holdout, y_pred_new)
+        precision_new = precision_score(y_holdout, y_pred_new, pos_label="positive")
+        recall_new = recall_score(y_holdout, y_pred_new, pos_label="positive")
+        f1_new = f1_score(y_holdout, y_pred_new, pos_label="positive")
 
         # Define expected thresholds for the performance metrics
         expected_accuracy = 0.40
