@@ -227,3 +227,9 @@ cred.txt
 local_s3/
 
 models/
+
+data/raw/
+data/interim/
+data/processed/
+models/model.pkl
+models/vectorizer.pkl
