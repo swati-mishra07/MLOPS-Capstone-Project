@@ -66,7 +66,7 @@ dvc remote add -d myremote s3://name of bucket
 35. go to root dir and: "docker build -t capstone-app:latest ."
 36. Try running the image: "docker run -p 8888:5000 capstone-app:latest"
     - This run will give 'OSError: capstone_test environment variable is not set'...obviously
-    - alternate: docker run -p 8888:5000 -e CAPSTONE_TEST=54b1d67648a9b1267ef906fsdfsd8b292f779f0 capstone-app:latest
+    - alternate: set CAPSTONE_TEST in your shell, then run: docker run -p 8888:5000 -e CAPSTONE_TEST capstone-app:latest
     - docker push youruser/capstone-app:latest (optional)
     - optional: try to delete image locally and pull it from dockerhub and run (optional)
 
