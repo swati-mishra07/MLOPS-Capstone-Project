@@ -2,9 +2,19 @@ name: CI Pipeline
 
 on:
   push:
-    paths-ignore:
-      - README.md
-      - assets/**
+    paths:
+      - .dvc/**
+      - dvc.yaml
+      - dvc.lock
+      - params.yaml
+      - requirements.txt
+      - setup.py
+      - tox.ini
+      - Dockerfile
+      - flask_app/**
+      - scripts/**
+      - src/**
+      - tests/**
 
 jobs:
   project-testing:
