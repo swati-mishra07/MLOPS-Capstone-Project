@@ -1,4 +1,4 @@
-# Mlops-Sentiment-Analysis-Pipeline: End-to-End Sentiment Analysis Pipeline
+# MLOps Sentiment Analysis Pipeline
 
 An end-to-end MLOps project that takes a text sentiment model from experimentation to a containerized web app, with **reproducible pipelines (DVC)**, **experiment tracking and model registry (MLflow on DagsHub)**, **remote data storage (AWS S3)**, and a **CI/CD pipeline (GitHub Actions)** that tests the model and app, then builds and pushes a Docker image to **AWS ECR**.
 
@@ -23,32 +23,26 @@ An end-to-end MLOps project that takes a text sentiment model from experimentati
 
 ## Table of Contents
 
-- [Mlops-Sentiment-Analysis-Pipeline: End-to-End Sentiment Analysis Pipeline](#mlops-capstone-project-end-to-end-sentiment-analysis-pipeline)
-  - [Table of Contents](#table-of-contents)
-  - [Project Status](#project-status)
-  - [Application Preview](#application-preview)
-  - [Architecture](#architecture)
-  - [Tech Stack](#tech-stack)
-  - [Repository Structure](#repository-structure)
-  - [ML Pipeline (DVC)](#ml-pipeline-dvc)
-  - [Model Performance](#model-performance)
-  - [Experiment Tracking and Model Registry](#experiment-tracking-and-model-registry)
-  - [Flask Web App](#flask-web-app)
-  - [Docker](#docker)
-  - [CI/CD Pipeline](#cicd-pipeline)
-    - [Required GitHub secrets and variables](#required-github-secrets-and-variables)
-  - [AWS Setup](#aws-setup)
-  - [Getting Started](#getting-started)
-    - [Prerequisites](#prerequisites)
-    - [Setup](#setup)
-    - [How the project was built (short version)](#how-the-project-was-built-short-version)
-  - [Extension: Deploying on EKS with Prometheus and Grafana](#extension-deploying-on-eks-with-prometheus-and-grafana)
-  - [Cost Notes and Cleanup](#cost-notes-and-cleanup)
-  - [Security Notes](#security-notes)
-  - [Key Learnings](#key-learnings)
-  - [Future Improvements](#future-improvements)
-  - [Author](#author)
-  - [License](#license)
+- [Project Status](#project-status)
+- [Application Preview](#application-preview)
+- [Architecture](#architecture)
+- [Tech Stack](#tech-stack)
+- [Repository Structure](#repository-structure)
+- [ML Pipeline (DVC)](#ml-pipeline-dvc)
+- [Model Performance](#model-performance)
+- [Experiment Tracking and Model Registry](#experiment-tracking-and-model-registry)
+- [Flask Web App](#flask-web-app)
+- [Docker](#docker)
+- [CI/CD Pipeline](#cicd-pipeline)
+- [AWS Setup](#aws-setup)
+- [Getting Started](#getting-started)
+- [Extension: Deploying on EKS with Prometheus and Grafana](#extension-deploying-on-eks-with-prometheus-and-grafana)
+- [Cost Notes and Cleanup](#cost-notes-and-cleanup)
+- [Security Notes](#security-notes)
+- [Key Learnings](#key-learnings)
+- [Future Improvements](#future-improvements)
+- [Author](#author)
+- [License](#license)
 
 ---
 
@@ -120,7 +114,7 @@ The Flask app takes a piece of text and predicts whether the sentiment is positi
 ## Repository Structure
 
 ```
-MLOPS-Capstone-Project/
+Mlops-Sentiment-Analysis-Pipeline/
 ├── .dvc/                   # DVC configuration
 ├── .github/workflows/      # CI/CD workflow (GitHub Actions)
 ├── data/                   # Raw, interim and processed data (tracked by DVC)
@@ -347,8 +341,8 @@ After a successful pipeline run, the `latest` image is available in ECR:
 
 ```bash
 # 1. Clone
-git clone https://github.com/swati-mishra07/MLOPS-Capstone-Project.git
-cd MLOPS-Capstone-Project
+git clone https://github.com/swati-mishra07/Mlops-Sentiment-Analysis-Pipeline.git
+cd Mlops-Sentiment-Analysis-Pipeline
 
 # 2. Create and activate the environment
 conda create -n atlas python=3.10
@@ -392,15 +386,17 @@ The full project plan continues from ECR to Kubernetes on AWS. I stopped at ECR 
 - **Local Kubernetes and monitoring project:** [Prometheus-Grafana-Minikube-Project](https://github.com/swati-mishra07/Prometheus-Grafana-Minikube-Project)
 - **Kubernetes basics project:** [K8s-Mini-Project](https://github.com/swati-mishra07/K8s-Mini-Project)
 
-The planned AWS deployment flow (not run on AWS):
+The planned AWS deployment flow (not run on AWS). First, create a small cluster with one managed node:
 
-1. **Create the cluster** with `eksctl` (managed node group, one `t3.small` node, `eu-north-1`), then confirm with `kubectl get nodes`:
+```bash
+eksctl create cluster --name flask-app-cluster --region eu-north-1 \
+  --nodegroup-name flask-app-nodes --node-type t3.small \
+  --nodes 1 --nodes-min 1 --nodes-max 1 --managed
+```
 
-   ```bash
-   eksctl create cluster --name flask-app-cluster --region eu-north-1 \
-     --nodegroup-name flask-app-nodes --node-type t3.small \
-     --nodes 1 --nodes-min 1 --nodes-max 1 --managed
-   ```
+Then:
+
+1. **Check the cluster** with `kubectl get nodes`.
 2. **Deploy the app** with a Kubernetes `Deployment` that pulls the image from ECR, and a `LoadBalancer` `Service` on port `5000`. The DagsHub token is passed in as a Kubernetes `Secret`. The node security group needs an inbound rule for port `5000`.
 3. **Get the external address** with `kubectl get svc` and test with `curl http://<external-address>:5000`.
 4. **Prometheus on an EC2 instance** (`t3.medium`, ports `9090` and `22` open), scraping the app's load balancer address on a 15 s interval.
