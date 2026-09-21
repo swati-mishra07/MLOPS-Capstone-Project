@@ -1,4 +1,4 @@
-# MLOps Capstone Project: End-to-End Sentiment Analysis Pipeline
+# Mlops-Sentiment-Analysis-Pipeline: End-to-End Sentiment Analysis Pipeline
 
 An end-to-end MLOps project that takes a text sentiment model from experimentation to a containerized web app, with **reproducible pipelines (DVC)**, **experiment tracking and model registry (MLflow on DagsHub)**, **remote data storage (AWS S3)**, and a **CI/CD pipeline (GitHub Actions)** that tests the model and app, then builds and pushes a Docker image to **AWS ECR**.
 
@@ -23,7 +23,7 @@ An end-to-end MLOps project that takes a text sentiment model from experimentati
 
 ## Table of Contents
 
-- [MLOps Capstone Project: End-to-End Sentiment Analysis Pipeline](#mlops-capstone-project-end-to-end-sentiment-analysis-pipeline)
+- [Mlops-Sentiment-Analysis-Pipeline: End-to-End Sentiment Analysis Pipeline](#mlops-capstone-project-end-to-end-sentiment-analysis-pipeline)
   - [Table of Contents](#table-of-contents)
   - [Project Status](#project-status)
   - [Application Preview](#application-preview)
